@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Expires" content="0">
+  	<meta http-equiv="Last-Modified" content="0">
+  	<meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+  	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Content-Type" content="text/html"; charset=utf-8> 
+
+	<title>Historico Calidad Aire</title>
+
+	<link rel="stylesheet" href="CSS/estilos.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>  
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="plugins/Leaflet-WFST.js"></script>
+	<script src="JS/main.js"></script>
+   <!-- <script src="plugins/leaflet-side-by-side.js"></script>-->
+        <!-- <script src="plugins/L.Control.Sidebar.js"></script> -->
+   
+
+
+       	<!--- ******************Leaflet Draw********************      	-->
+
+      	<!--- 	<script src="plugins/leaflet-draw/Leaflet.draw.js"></script>
+        <script src="plugins/leaflet-draw/Leaflet.Draw.Event.js"></script>
+        <link rel="stylesheet" href="plugins/leaflet-draw/leaflet.draw.css"/>
+
+        <script src="plugins/leaflet-draw/Toolbar.js"></script>
+        <script src="plugins/leaflet-draw/Tooltip.js"></script>
+
+        <script src="plugins/leaflet-draw/ext/GeometryUtil.js"></script>
+        <script src="plugins/leaflet-draw/ext/LatLngUtil.js"></script>
+        <script src="plugins/leaflet-draw/ext/LineUtil.Intersect.js"></script>
+        <script src="plugins/leaflet-draw/ext/Polygon.Intersect.js"></script>
+        <script src="plugins/leaflet-draw/ext/Polyline.Intersect.js"></script>
+        <script src="plugins/leaflet-draw/ext/TouchEvents.js"></script>
+
+        <script src="plugins/leaflet-draw/draw/DrawToolbar.js"></script>
+
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Feature.js"></script>
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Marker.js"></script>
+        <script src="plugins/leaflet-draw/draw/handler/Draw.SimpleShape.js"></script>
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Polyline.js"></script>
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Circle.js"></script>
+         <script src="plugins/leaflet-draw/draw/handler/Draw.CircleMarker.js"></script>
+        
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Polygon.js"></script>
+        <script src="plugins/leaflet-draw/draw/handler/Draw.Rectangle.js"></script>
+
+
+        <script src="plugins/leaflet-draw/edit/EditToolbar.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/EditToolbar.Edit.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/EditToolbar.Delete.js"></script>
+
+        <script src="plugins/leaflet-draw/Control.Draw.js"></script>
+
+        <script src="plugins/leaflet-draw/edit/handler/Edit.Poly.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/Edit.SimpleShape.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/Edit.CircleMarker.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/EditCircle.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/Edit.Rectangle.js"></script>
+        <script src="plugins/leaflet-draw/edit/handler/Edit.Marker.js"></script>	-->
+
+       <!--- ******************Finish Leaflet Draw********************      	-->
+
+       <!--- ******************side bar********************      	-->
+      <!--- <link rel="stylesheet" href="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.css" />
+       <script src="https://rawgit.com/Turbo87/leaflet-sidebar/master/src/L.Control.Sidebar.js"></script> -->
+
+            <!--- ******************finish side bar********************      	-->     
+</head> 
+
+<body>
+
+	<div id="header" class="col-md-12">
+            <h1 class="text-center">DATOS HISTORICOS DE LA CALIDAD DEL AIRE EN BOGOTA</h1>
+	</div> 
+	
+    <div id="side_panel" class="col-md-3">  
+			<form action="#" id="parametros-iniciales">
+                              
+				<div class="form-group">
+					<label for="estacion">Estacion:</label>
+					<select class="form-control" id="estacion">
+						<option value="">- Seleccionar -</option>
+						<option value="Bolivia">Bolivia</option>
+						<option value="2">Carvajal</option>
+						<option value="3">Centro de Alto Rendimiento</option>
+						<option value="4">Fontibon</option>
+						<option value="5">Guaymaral</option>
+						<option value="6">Kennedy</option>
+						<option value="7">Las Ferias</option>
+						<option value="8">Puente Aranda</option>
+						<option value="9"> Sagrado Corazon</option>
+						<option value="14">Suba</option>
+						<option value="11">Tunal</option>
+						<option value="1">Usaquen</option>
+						<option value="13">Unidad movil</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="start">Fecha de Inicio:</label>
+					<input type="date" id="start" name="trip-start"	min = "2015-01-01" max="2015-12-31" >
+
+					<label for="start">Fecha de Fin:</label>
+					<input type="date" id="end" name="trip-end"	min = "2015-01-01" max="2015-12-31" >
+				</div>
+
+				<div id="resultado"></div>
+				  
+		  		<div class="form-group">
+					<button type="submit" class="btn btn-raised btn-primary">Consultar </button>
+		  		</div>
+  			</form>        	          
+
+
+
+
+           
+				
+			
+            
+         </div>
+        <div id="mapdiv" class="col-md-9">
+	        
+		</div>
+
+        <div id="footer" class="col-md-12">
+            <h5 id="map_coords" class="text-center">Latitude: 5 Longitude: -74 Zoom Level: 5</h5>
+            <h5 class="text-center">&copy;2018 <a href="https://asiltda.co/">Atencion Social Integral ASI</a></h5>
+        </div>
+
+        
+
+</body>
+<!-- <script src="JS/report.js" type="text/javascript"></script>
+ -->
+</html>
