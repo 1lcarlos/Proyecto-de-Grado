@@ -16,7 +16,9 @@
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>  
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<script src="plugins/Leaflet-WFST.js"></script>
+    <script src="plugins/Leaflet-WFST.js"></script>
+    <script src="JS/momentjs.js"></script>
+    <script src="JS/moment-with-locales.js"></script>
 	<script src="JS/main.js"></script>
    <!-- <script src="plugins/leaflet-side-by-side.js"></script>-->
         <!-- <script src="plugins/L.Control.Sidebar.js"></script> -->
@@ -81,42 +83,111 @@
 	</div> 
 	
     <div id="side_panel" class="col-md-3">  
-			<form action="#" id="parametros-iniciales">
-                              
-				<div class="form-group">
-					<label for="estacion">Estacion:</label>
-					<select class="form-control" id="estacion">
-						<option value="">- Seleccionar -</option>
-						<option value="Bolivia">Bolivia</option>
-						<option value="2">Carvajal</option>
-						<option value="3">Centro de Alto Rendimiento</option>
-						<option value="4">Fontibon</option>
-						<option value="5">Guaymaral</option>
-						<option value="6">Kennedy</option>
-						<option value="7">Las Ferias</option>
-						<option value="8">Puente Aranda</option>
-						<option value="9"> Sagrado Corazon</option>
-						<option value="14">Suba</option>
-						<option value="11">Tunal</option>
-						<option value="1">Usaquen</option>
-						<option value="13">Unidad movil</option>
-					</select>
-				</div>
+            <!-- <form action="#" id="parametros-iniciales">
+            
+                <div class="form-group">
+                    <label for="estacion">Estacion:</label>
+                    <select class="form-control" id="estacion">
+                        <option value="">- Seleccionar -</option>
+                        <option value="Bolivia">Bolivia</option>
+                        <option value="2">Carvajal</option>
+                        <option value="3">Centro de Alto Rendimiento</option>
+                        <option value="4">Fontibon</option>
+                        <option value="5">Guaymaral</option>
+                        <option value="6">Kennedy</option>
+                        <option value="7">Las Ferias</option>
+                        <option value="8">Puente Aranda</option>
+                        <option value="9"> Sagrado Corazon</option>
+                        <option value="14">Suba</option>
+                        <option value="11">Tunal</option>
+                        <option value="1">Usaquen</option>
+                        <option value="13">Unidad movil</option>
+                    </select>
+                </div>
+            
+                <div>
+                    <label for="start">Fecha de Inicio:</label>
+                    <input type="date" id="start" name="trip-start" min="2015-01-01" max="2015-12-31">
+            
+                    <label for="start">Fecha de Fin:</label>
+                    <input type="date" id="end" name="trip-end" min="2015-01-01" max="2015-12-31">
+                </div>
+            
+                <div id="resultado"></div>
+            
+                <div class="form-group">
+                    <button type="submit" class="btn btn-raised btn-primary">Consultar </button>
+                </div>
+            </form>
+ -->
+            <h3 id="esta">Estaciones</h3>
 
-				<div>
-					<label for="start">Fecha de Inicio:</label>
-					<input type="date" id="start" name="trip-start"	min = "2015-01-01" max="2015-12-31" >
+            <select id='filter' class='form-control'>
+                <option value="">- Seleccionar -</option>
+                <!-- <option value="Bolivia">Bolivia</option> -->
+                <option value="EST_CARVAJAL">Carvajal</option>
+                <option value="EST_CENAR">Centro de Alto Rendimiento</option>
+                <option value="EST_FONTIBON">Fontibon</option>
+                <option value="EST_GAYMARAL">Guaymaral</option>
+                <option value="EST_KENNEDY">Kennedy</option>
+                <option value="EST_FERIAS">Las Ferias</option>
+                <option value="EST_PUENTE_ARANDA">Puente Aranda</option>
+                <option value="EST_MINAMBIENTE"> Sagrado Corazon</option>
+                <option value="EST_SUBA">Suba</option>
+                <option value="EST_TUNAL">Tunal</option>
+                <option value="EST_USAQUEN">Usaquen</option>
+                <!-- <option value="13">Unidad movil</option> -->
+                
+            </select>
+            <div>
+                <label for="start">Fecha de Inicio:</label>
+                <input type="date" id="start" name="trip-start" min="2013-01-01" max="2015-12-31">
+        
+                <label for="start">Fecha de Fin:</label>
+                <input type="date" id="end" name="trip-end" min="2013-01-01" max="2015-12-31">
+            </div>
+            <button id="estac" class="btn btn-raised btn-primary">Consultar </button>
 
-					<label for="start">Fecha de Fin:</label>
-					<input type="date" id="end" name="trip-end"	min = "2015-01-01" max="2015-12-31" >
-				</div>
 
-				<div id="resultado"></div>
-				  
-		  		<div class="form-group">
-					<button type="submit" class="btn btn-raised btn-primary">Consultar </button>
-		  		</div>
-  			</form>        	          
+
+         <h3 id="esta">Escoge una Estacion</h3>
+
+            <select id='filter1' class='form-control'>
+                <option value="">- Seleccionar -</option>
+                <!-- <option value="Bolivia">Bolivia</option> -->
+                <option value="EST_CARVAJAL">Carvajal</option>
+                <option value="EST_CENAR">Centro de Alto Rendimiento</option>
+                <option value="EST_FONTIBON">Fontibon</option>
+                <option value="EST_GUAYMARAL">Guaymaral</option>
+                <option value="EST_KENNEDY">Kennedy</option>
+                <option value="EST_FERIAS">Las Ferias</option>
+                <option value="EST_PUENTE_ARANDA">Puente Aranda</option>
+                <option value="EST_SAN_CRISTOBAL">San Cristobal</option>
+                <option value="EST_MINAMBIENTE"> Sagrado Corazon</option>
+                <option value="EST_SUBA">Suba</option>
+                <option value="EST_TUNAL">Tunal</option>
+                <option value="EST_USAQUEN">Usaquen</option>
+                <!-- <option value="13">Unidad movil</option> -->
+                
+            </select>
+
+            <h4 id="gas">Escoge entre los tipos de gases</h4>
+
+            <select id='filter2' class='form-control'>
+                <option value="">- Seleccionar -</option>                
+                <option value="PM_10">PM 10</option>
+                <option value="PM_2_5">PM 2.5</option>
+                <option value="N02">NO2</option>
+                <option value="NO">NO</option>
+                <option value="SO2">SO2</option>
+                <option value="CO">CO</option>                
+                
+            </select>
+            <div>
+                <label for="start">Escoge la Fecha</label>
+                <input type="date" id="fecha" name="trip" min="2013-01-01" max="2019-12-31">
+            </div>
+            <button id="seleccion" class="btn btn-raised btn-primary">Consultar </button>
 
 
 
@@ -125,14 +196,15 @@
 				
 			
             
-         </div>
+    </div>
+
         <div id="mapdiv" class="col-md-9">
 	        
 		</div>
 
         <div id="footer" class="col-md-12">
             <h5 id="map_coords" class="text-center">Latitude: 5 Longitude: -74 Zoom Level: 5</h5>
-            <h5 class="text-center">&copy;2018 <a href="https://asiltda.co/">Atencion Social Integral ASI</a></h5>
+            <h5 class="text-center">&copy;2021 <a href="#">Luis Carlos Cardozo Nuñez</a></h5>
         </div>
 
         
