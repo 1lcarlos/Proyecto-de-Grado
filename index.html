@@ -13,13 +13,16 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 	
-    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>  
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vis/3.12.0/vis.min.js"></script>
     <script src="plugins/Leaflet-WFST.js"></script>
+    <script src="plugins/leaflet.timeline.js"></script>
     <script src="JS/momentjs.js"></script>
     <script src="JS/moment-with-locales.js"></script>
-	<script src="JS/main.js"></script>
+    <!-- <script src="JS/main.js"></script> -->
+    <script src="JS/funciones.js"></script>
    <!-- <script src="plugins/leaflet-side-by-side.js"></script>-->
         <!-- <script src="plugins/L.Control.Sidebar.js"></script> -->
    
@@ -139,14 +142,24 @@
                 <!-- <option value="13">Unidad movil</option> -->
                 
             </select>
+            <select id='filter3' class='form-control'>
+                <option value="">- Seleccionar -</option>                
+                <option value="PM_10">PM 10</option>
+                <option value="PM_2_5">PM 2.5</option>
+                <option value="N02">NO2</option>
+                <option value="NO">NO</option>
+                <option value="SO2">SO2</option>
+                <option value="CO">CO</option> 
+            </select>
             <div>
                 <label for="start">Fecha de Inicio:</label>
-                <input type="date" id="start" name="trip-start" min="2013-01-01" max="2015-12-31">
+                <input type="date" id="start" name="trip-start" min="2013-01-01" max="2020-12-31">
         
                 <label for="start">Fecha de Fin:</label>
-                <input type="date" id="end" name="trip-end" min="2013-01-01" max="2015-12-31">
+                <input type="date" id="end" name="trip-end" min="2013-01-01" max="2020-12-31">
             </div>
             <button id="estac" class="btn btn-raised btn-primary">Consultar </button>
+            
 
 
 
@@ -189,27 +202,26 @@
             </div>
             <button id="seleccion" class="btn btn-raised btn-primary">Consultar </button>
 
+            <ul id="displayed-list"></ul>
 
+            
 
-
-           
-				
-			
+           					
             
     </div>
-
+    <div id="contenedor-mapa" >   
         <div id="mapdiv" class="col-md-9">
 	        
 		</div>
-
+    </div>
+    <div id="timeline"></div>
         <div id="footer" class="col-md-12">
             <h5 id="map_coords" class="text-center">Latitude: 5 Longitude: -74 Zoom Level: 5</h5>
             <h5 class="text-center">&copy;2021 <a href="#">Luis Carlos Cardozo Nuñez</a></h5>
         </div>
 
         
-
+        
 </body>
-<!-- <script src="JS/report.js" type="text/javascript"></script>
- -->
+
 </html>
