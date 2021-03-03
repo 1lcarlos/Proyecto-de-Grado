@@ -12,9 +12,6 @@ $(document).ready(function () {
 		osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
 		topomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'),
 		image = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}').addTo(mymap);
-	
-
-	//L.control.sideBySide(grayscale, image).addTo(mymap);//Este es el controlador del swipe
 
 //Variables Globales
 	const contenedorMapa = document.querySelector('#contenedor-mapa');
@@ -183,6 +180,16 @@ function spinner(){
 	contenedorMapa.appendChild(divSpinner);
 }
 
+function limpiarMapa(marker){
+	$('#Limpiar').click(function remove() {
+		mymap.removeLayer(marker);
+		var bounds = [[4.83510, -73.78624], [4.48333, -74.43358]];
+		mymap.fitBounds(bounds);		
+
+}); 
+}
+
+
 // ESCOGE EL DIA CLAVE COMPARA LA FECHA CON LA QUE ESCOGE EL USUARIO
 function diaClave(propie){
 
@@ -209,9 +216,7 @@ function diaClave(propie){
 		//capturar la fecha del WFS y convertirla a milisegundos
 		
 		
-		const fechaWFS = new Date(info.FECHA);	
-		//console.log(fechaWFS);
-		//const fechaTrans = fechaWFS.toString().replace(/-/g, '\/');	   	
+		const fechaWFS = new Date(info.FECHA);			   	
 		const fechaWFStra = fechaWFS.getTime();	
 											
 												   
@@ -224,13 +229,8 @@ function diaClave(propie){
 							 const No = informacion.NO;
 							 const Co = informacion.co;
 							 const So2 = informacion.so2;
-
-							 //const fechaFormat = new Date('fech');
-							 //moment.locale('es');
-							 //moment().format('LLLL', fechaFormat);
-
-					 const gas = $('#filter2').val();
-							 console.log(gas);
+							
+					 const gas = $('#filter2').val();							 
 							 //escogerGas(gas);
 					switch (gas) {
 						case 'PM_10':
@@ -241,7 +241,9 @@ function diaClave(propie){
 							<li>Fecha: ${fechaFormulario}</li>
 							<li>Medicion de Gas Promedio PM10: ${pm_10.toString()}</li>
 								</ol>` ).addTo(mymap);								
-								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });							
+								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+								limpiarMapa(marker);
+													
 						break;
 						case 'PM_2_5':
 
@@ -250,7 +252,8 @@ function diaClave(propie){
 							<li>${pm_2_5.toString()}</li>							
 								</ol>` ).addTo(mymap);
 								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
-								console.log(pm_2_5);							
+								limpiarMapa(marker);
+																				
 						break;
 						case 'N02':
 
@@ -258,7 +261,9 @@ function diaClave(propie){
 							<li>${fechaFormulario}</li>
 							<li>${no2.toString()}</li>
 								</ol>` ).addTo(mymap);
-								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });								
+								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });
+								limpiarMapa(marker);
+																					
 						break;
 						case 'NO':
 
@@ -266,7 +271,9 @@ function diaClave(propie){
 							<li>${fechaFormulario}</li>	
 							<li>${No.toString()}</li>
 								</ol>` ).addTo(mymap);
-								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });								
+								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+								limpiarMapa(marker);
+																				
 						break;
 						case 'CO':
 
@@ -274,7 +281,9 @@ function diaClave(propie){
 							<li>${fechaFormulario}</li>
 							<li>${Co.toString()}</li>
 								</ol>` ).addTo(mymap);
-								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });								
+								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+								limpiarMapa(marker);
+																				
 						break;
 						case 'SO2':
 
@@ -282,7 +291,9 @@ function diaClave(propie){
 							<li>${fechaFormulario}</li>					
 							<li>${So2.toString()}</li>
 								</ol>` ).addTo(mymap);
-								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });								
+								mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+								limpiarMapa(marker);
+																				
 						break;
 					
 						default: console.log('no funciona');
@@ -308,8 +319,7 @@ function diaClave(propie){
 // Constructor de Estaciones
 	function Estaciones( latitud, longitud, fecha, pm10, pm25, NO2, NO, co, so2){		
 		this.latitud = latitud;
-		this.longitud = longitud;		
-		//this.nombre = nombre;
+		this.longitud = longitud;
 		this.fecha = fecha;
 		this.pm10 = pm10;
 		this.pm25 = pm25;
@@ -321,17 +331,25 @@ function diaClave(propie){
 	
 	
 	$('#seleccion').click(function esco_Esta(){
-		spinner();
-
+		//spinner();
+		if ($('#filter2').val().length == 0 || $('#filter1').val().length == 0 || $('#fecha').val().length == 0 ) {
+			alert('Hace falta escoger un gas o una Estacion para la visualizacion');
+			//	return false;
+		}else{
 		var gas = $('#filter2').val();
 		var capa = $('#filter1').val();
-		agregarUnicaEstacion(capa);				
+		agregarUnicaEstacion(capa);	
+		}
+
+					
 	
 		}); 
+
+		
 		
 
 	function agregarUnicaEstacion(wfs){
-		var boundaries9 = new L.WFS({
+		var estacion = new L.WFS({
 			url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
 			typeNS: wfs,
 			typeName: wfs,
@@ -340,223 +358,523 @@ function diaClave(propie){
 			 
 	   }).once('load', function enviarDatos() {
 						 
-		var geoJsons = boundaries9.toGeoJSON();		
+		var geoJsons = estacion.toGeoJSON();		
 										  
 		var propie = geoJsons.features;		
 		
 		
 		diaClave(propie);
 	
-		  
+		
 																
 		});	 
-}
-
-
-	$('#estac').click(function esco_Esta(){
-
-		var capa = $('#filter').val();
-		agregarEstacion(capa);			
-	
-		}); 
-
-	
-function agregarEstacion(wfs){
-		var boundaries9 = new L.WFS({
-			url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
-		 typeNS: wfs,
-		 typeName: wfs,
-		 crs: L.CRS.EPSG4326,
-		 geometryField: 'geom',
-		 style: {
-		   color: 'red',
-		   weight: 1,
-		   
-		   
-			 } 
-			 
-	   }).once('load', function enviarformulario() {
-							 
-				 var geoJsons = boundaries9.toGeoJSON();
-				 console.log(geoJsons);
-				 												   
-				 var propie = geoJsons.features;
-				 
-				 console.log(propie);
-				 console.log(propie[0].properties.FECHA);
-				 
-
-
-				//  var getInterval = function (quake) {
-				// 	// earthquake data only has a time, so we'll use that as a "start"
-				// 	// and the "end" will be that + some value based on magnitude
-				// 	// 18000000 = 30 minutes, so a quake of magnitude 5 would show on the
-				// 	// map for 150 minutes or 2.5 hours
-				// 	return {
-				// 	  start: quake,
-				// 	  end: quake * 180000,
-				// 	};
-				//   };
-				//   getInterval(fechaWFStra);																	
-
-
-				//   console.log(getInterval(fechaWFStra));
-
-				//   var timelineControl = L.timelineSliderControl({
-				// 	formatOutput: function (date) {
-				// 	  return new Date(date).toString();
-				// 	},
-				//   });
-
-				//   var timeline = L.timeline(propie, {
-				// 	getInterval: getInterval(),
-				// 	pointToLayer: function (propie, latlng) {
-				// 	  var hue_min = 120;
-				// 	  var hue_max = 0;
-				// 	  var hue =
-				// 		(propie.properties.PM_10 ) * (hue_max - hue_min) + hue_min;
-				// 	  return L.circleMarker(latlng, {
-				// 		radius: data.properties.PM_10 * 3,
-				// 		color: "hsl(" + hue + ", 100%, 50%)",
-				// 		fillColor: "hsl(" + hue + ", 100%, 50%)",
-				// 	  }).bindPopup(
-				// 		'<a href="">click for more info</a>'
-				// 	  );
-				// 	},
-				//   });
-
-				//   timelineControl.addTo(map);
-				//   timelineControl.addTimelines(timeline);
-				//   timeline.addTo(map);
-
-
-
-
-
-
-
-				/* getInterval = {
-					start: propie.properties.FECHA.getTime(),
-					end:  'fecha en milisegundos'
-				}*/
-
-				 const fechaIni = document.querySelector('input[name="trip-start"]').value;
-				 const fechaFin = document.querySelector('input[name="trip-end"]').value;
-				 const inicio = new Date(fechaIni);
-				 const transcurso1 = inicio.getTime()
-				 const fin = new Date(fechaFin);
-				 const transcurso2 = fin.getTime()
-
-				 const coordenadas =propie[0].properties;										
-				 const latitud = coordenadas.LATITUD;
-				 const longitud = coordenadas.LONGITUD;
-				 var marker = L.marker([latitud,longitud]).addTo(mymap)	
-
-				 for(i=0; i< propie.length; i++){
-					var info = propie[i].properties;
-					//console.log(info);
-
-					
-					const latitud = info.LATITUD;
-					const longitud = info.LONGITUD;
-					const fech = info.FECHA;
-					//const nombre = info.COD_ESTAC;
-					const pm10 = info.PM_10;
-					const pm25 = info.PM_2_5;
-					const NO2 = info.NO2;
-					const NO = info.NO;
-					const co = info.CO;
-					const so2 = info.SO2;
-
-
-					//capturar la fecha del WFS y convertirla a milisegundos
-					const fechaWFS = new Date(info.FECHA);	
-					const fechaWFStra = fechaWFS.getTime();										
-					//console.log(fechaWFStra);
-
-					
-
-
-
-
-
-
-
-													
-			if(fechaWFStra >= transcurso1 & fechaWFStra <= transcurso2){
-				const informacion = new Estaciones(latitud, longitud,fech)
-				/*const informacion = new Estaciones(latitud, longitud, nombre, fechaWFS, pm10, pm25, ozono, co, so2)*/
-						console.log(informacion);
-					}
-			else{
-						console.log('no selecciono nada')
-					}
-				}	
-				
-				
-
-
-
-
-		 });//fin duncion enviar formulario
-
-	}//fin funcion agregar estacion 2 
+	}
 
 //Time slider
 
+$('#estac').click(function esco_Esta(){
 
-getInterval = {
-	start: 'fecha en milisegundos',
-	end:  'fecha en milisegundos'
+
+	//var esta = $('#filter').val();
+  //agregarEstacion(esta);
+  agregarEstacionTimeSlider("TESTEO_MILI");
+  // var gasTipo = $('#filter3').val();
+  // return gasTipo;
+  
+  });  
+
+  function pintarDatos(gas, feature){
+	switch (gas) {
+	case 'PM_10':
+			if (feature.properties.PM_10 > 0 && feature.properties.PM_10 < 54) {
+			  return {
+				radius: feature.properties.PM_10,
+				fillColor: "#CCE5FF",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};          		
+			} else 
+			  if(feature.properties.PM_10 >= 54 && feature.properties.PM_10 < 154){
+				return {
+				radius: feature.properties.PM_10,
+				fillColor: "#00E400",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			} else 
+			  if(feature.properties.PM_10 >= 154 && feature.properties.PM_10 < 254){
+			  
+			  return  {
+				radius: feature.properties.PM_10,
+				fillColor: "#FFFF00",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			}else
+			  if(feature.properties.PM_10 >= 254 && feature.properties.PM_10 < 354){
+			  
+			  return {
+				radius: feature.properties.PM_10,
+				fillColor: "#FF7E00",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			}else
+			  if(feature.properties.PM_10 >= 354 && feature.properties.PM_10 < 424){
+			  
+			  return {
+				radius: feature.properties.PM_10,
+				fillColor: "#FF0000",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+					
+			}else 
+			  {
+			  
+			  return {
+				radius: feature.properties.PM_10,
+				fillColor: "#8F3F97",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5} ;
+			}        						
+				break;
+	case 'PM_2_5': 
+			if (feature.properties.PM_2_5 > 0 && feature.properties.PM_2_5 < 12) {
+			  return {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#CCE5FF",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};          		
+			} else 
+			  if(feature.properties.PM_2_5 >= 12 && feature.properties.PM_2_5 < 35){
+				return {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#00E400",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			} else 
+			  if(feature.properties.PM_2_5 >= 35 && feature.properties.PM_2_5 < 55){
+			  
+			  return  {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#FFFF00",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			}else
+			  if(feature.properties.PM_2_5 >= 55 && feature.properties.PM_2_5 < 150 ){
+			  
+			  return {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#FF7E00",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};
+			}else
+			  if(feature.properties.PM_2_5 >= 150 && feature.properties.PM_2_5 < 250){
+			  
+			  return {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#FF0000",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5};	
+			}else 
+			  {
+			  
+			  return {
+				radius: feature.properties.PM_2_5,
+				fillColor: "#8F3F97",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.5} ;
+			}     						
+			  break;
+	case 'CO':
+	  if (feature.properties.CO > 0 && feature.properties.CO < 12) {
+		return {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#CCE5FF",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};          		
+	  } else 
+		if(feature.properties.CO >= 12 && feature.properties.CO < 35){
+		  return {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#00E400",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  } else 
+		if(feature.properties.CO >= 35 && feature.properties.CO < 55){
+		
+		return  {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#FFFF00",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  }else
+		if(feature.properties.CO >= 55 && feature.properties.CO < 150 ){
+		
+		return {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#FF7E00",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  }else
+		if(feature.properties.CO >= 150 && feature.properties.CO < 250){
+		
+		return {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#FF0000",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};	
+	  }else 
+		{
+		
+		return {
+		  radius: feature.properties.CO * 50,
+		  fillColor: "#8F3F97",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5} ;
+	  }         								
+	
+		break;
+	case 'NO2':
+
+		  if (feature.properties.NO2 > 0 && feature.properties.NO2 < 12) {
+			return {
+			  radius: feature.properties.NO2,
+			  fillColor: "#CCE5FF",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};          		
+		  } else 
+			if(feature.properties.NO2 >= 12 && feature.properties.NO2 < 35){
+			  return {
+			  radius: feature.properties.NO2,
+			  fillColor: "#00E400",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  } else 
+			if(feature.properties.NO2 >= 35 && feature.properties.NO2 < 55){
+			
+			return  {
+			  radius: feature.properties.NO2,
+			  fillColor: "#FFFF00",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  }else
+			if(feature.properties.NO2 >= 55 && feature.properties.NO2 < 150 ){
+			
+			return {
+			  radius: feature.properties.NO2,
+			  fillColor: "#FF7E00",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  }else
+			if(feature.properties.NO2 >= 150 && feature.properties.NO2 < 250){
+			
+			return {
+			  radius: feature.properties.NO2,
+			  fillColor: "#FF0000",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};	
+		  }else 
+			{
+			
+			return {
+			  radius: feature.properties.NO2,
+			  fillColor: "#8F3F97",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5} ;
+		  } 
+		  break;
+	case 'SO2':
+	  if (feature.properties.SO2 > 0 && feature.properties.SO2 < 12) {
+		return {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#CCE5FF",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};          		
+	  } else 
+		if(feature.properties.SO2 >= 12 && feature.properties.SO2 < 35){
+		  return {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#00E400",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  } else 
+		if(feature.properties.SO2 >= 35 && feature.properties.SO2 < 55){
+		
+		return  {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#FFFF00",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  }else
+		if(feature.properties.SO2 >= 55 && feature.properties.SO2 < 150 ){
+		
+		return {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#FF7E00",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};
+	  }else
+		if(feature.properties.SO2 >= 150 && feature.properties.SO2 < 250){
+		
+		return {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#FF0000",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5};	
+	  }else 
+		{
+		
+		return {
+		  radius: feature.properties.SO2 * 50,
+		  fillColor: "#8F3F97",
+		  color: "#000",
+		  weight: 1,
+		  opacity: 1,
+		  fillOpacity: 0.5} ;
+	  }         								
+	
+		break;
+	
+	case 'NO':
+
+		  if (feature.properties.NO > 0 && feature.properties.NO < 12) {
+			return {
+			  radius: feature.properties.NO,
+			  fillColor: "#CCE5FF",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};          		
+		  } else 
+			if(feature.properties.NO >= 12 && feature.properties.NO < 35){
+			  return {
+			  radius: feature.properties.NO,
+			  fillColor: "#00E400",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  } else 
+			if(feature.properties.NO >= 35 && feature.properties.NO < 55){
+			
+			return  {
+			  radius: feature.properties.NO,
+			  fillColor: "#FFFF00",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  }else
+			if(feature.properties.NO >= 55 && feature.properties.NO < 150 ){
+			
+			return {
+			  radius: feature.properties.NO,
+			  fillColor: "#FF7E00",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};
+		  }else
+			if(feature.properties.NO >= 150 && feature.properties.NO < 250){
+			
+			return {
+			  radius: feature.properties.NO,
+			  fillColor: "#FF0000",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5};	
+		  }else 
+			{
+			
+			return {
+			  radius: feature.properties.NO,
+			  fillColor: "#8F3F97",
+			  color: "#000",
+			  weight: 1,
+			  opacity: 1,
+			  fillOpacity: 0.5} ;
+		  } 
+		  break;
+
+
+	default: console.log('no funciona');
+	  break;
+  }
+} 
+
+function mostrarInfo(gas, quake){
+	switch (gas) {
+	  case 'PM_10':
+		const fechaVista = new Date (quake.feature.properties.end);
+
+		var list = document.getElementById("displayed-list");
+		list.innerHTML = "";
+		var li = document.createElement("li");
+		li.innerHTML = `
+		MEDICION PM 10: ${quake.feature.properties.PM_10}	</br>
+		FECHA: ${fechaVista.toString()}					
+		  `
+		list.appendChild(li);
+		break;
+	  case 'PM_2_5':
+		  var list = document.getElementById("displayed-list");
+		  list.innerHTML = "";
+		  var li = document.createElement("li");
+		  li.innerHTML = `
+		  MEDICION PM 2.5: ${quake.feature.properties.PM_2_5}	</br>
+		  FECHA: ${quake.feature.properties.end.getDate}					
+			`
+		  list.appendChild(li);
+		  break;
+
+	  case 'NO':
+			var list = document.getElementById("displayed-list");
+			list.innerHTML = "";
+			var li = document.createElement("li");
+			li.innerHTML = `
+			MEDICION NO: ${quake.feature.properties.NO}	</br>
+			FECHA: ${quake.feature.properties.end.getDate}					
+			  `
+			list.appendChild(li);
+			break;
+	  case 'SO2':
+			  var list = document.getElementById("displayed-list");
+			  list.innerHTML = "";
+			  var li = document.createElement("li");
+			  li.innerHTML = `
+			  MEDICION SO2 ${quake.feature.properties.SO2}	</br>
+			  FECHA: ${quake.feature.properties.end.getDate}					
+				`
+			  list.appendChild(li);
+			  break;
+	  case 'CO':
+				var list = document.getElementById("displayed-list");
+				list.innerHTML = "";
+				var li = document.createElement("li");
+				li.innerHTML = `
+				MEDICION CO ${quake.feature.properties.CO}	</br>
+				FECHA: ${quake.feature.properties.end.getDate}					
+				  `
+				list.appendChild(li);
+				break;
+	
+	  default:
+		console.log('no funciona')
+		break;
+	}
 }
 
-var timelineControl = L.timelineSliderControl({
-	formatOutput: function (date) {
-	  return new Date(date).toString();
-	},
-  });
+function  agregarEstacionTimeSlider(wfs){
+	var estacion = new L.WFS({
+		url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
+		typeNS: wfs,
+		typeName: wfs,
+		crs: L.CRS.EPSG4326,
+		geometryField: 'geom'
+		 
+   }).once('load', function enviarformulario() {
+						 
+			 var geoJsons = estacion.toGeoJSON();
+			 var timeline = L.timeline(geoJsons,{                     
+				pointToLayer: function (feature, latlng) { 
+					const gas = $('#filter3').val();
+					return L.circleMarker(latlng,pintarDatos(gas,feature))
+							}
 
-// function eqfeed_callback(data) {
-// 	var getInterval = function (quake) {
-// 	  // earthquake data only has a time, so we'll use that as a "start"
-// 	  // and the "end" will be that + some value based on magnitude
-// 	  // 18000000 = 30 minutes, so a quake of magnitude 5 would show on the
-// 	  // map for 150 minutes or 2.5 hours
-// 	  return {
-// 		start: quake.properties.time,
-// 		end: quake.properties.time + quake.properties.mag * 1800000,
-// 	  };
-// 	};
-// 	var timelineControl = L.timelineSliderControl({
-// 	  formatOutput: function (date) {
-// 		return new Date(date).toString();
-// 	  },
-// 	});
-	
-// 	var timeline = L.timeline(data, {
-// 	  getInterval: getInterval,
-// 	  pointToLayer: function (data, latlng) {
-// 		var hue_min = 120;
-// 		var hue_max = 0;
-// 		var hue =
-// 		  (data.properties.mag / 10) * (hue_max - hue_min) + hue_min;
-// 		return L.circleMarker(latlng, {
-// 		  radius: data.properties.mag * 3,
-// 		  color: "hsl(" + hue + ", 100%, 50%)",
-// 		  fillColor: "hsl(" + hue + ", 100%, 50%)",
-// 		}).bindPopup(
-// 		  '<a href="' + data.properties.url + '">click for more info</a>'
-// 		);
-// 	  },
-// 	});
-// 	timelineControl.addTo(map);
-// 	timelineControl.addTimelines(timeline);
-// 	timeline.addTo(map);
-// 	/*timeline.on("change", function (e) {
-// 	  updateList(e.target);
-// 	});
-// 	updateList(timeline);*/
-//   }
+			}).addTo(mymap);  
+			
+			const fechaIni = document.querySelector('input[name="trip-start"]').value;
+			const fechaFin = document.querySelector('input[name="trip-end"]').value;
+
+	  
+	   var timelineControl = L.timelineSliderControl({
+				start: new Date(fechaIni).getTime(),
+				end: new Date(fechaFin).getTime(),
+				formatOutput: function (date) {
+				  return new Date(date).toString();
+				},
+				duration: 30000
+			  });
+	   function updateList(timeline) {
+			  var displayed = timeline.getLayers();
+			   displayed.forEach(function (quake) {
+				const gas = $('#filter3').val();
+				console.log(gas);
+				mostrarInfo(gas,quake);
+
+			  });
+			}
+
+			timelineControl.addTo(mymap);
+			timelineControl.addTimelines(timeline);
+			timeline.addTo(mymap);
+			timeline.on("change", function (e) {
+			  updateList(e.target);
+			});
+			updateList(timeline);    
+
+	 });//fin duncion enviar formulario
+
+}//fin funcion agregar estacion 2 
+
+
+
 
 	
 });

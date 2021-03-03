@@ -45,533 +45,149 @@ $(document).ready(function () {
 	
 
 
-	$('#estac').click(function esco_Esta(){
+	$('#seleccion').click(function esco_Esta(){
 
 
-	  //var esta = $('#filter').val();
-    //agregarEstacion(esta);
-    agregarEstacion("TESTEO_MILI");
+	  var esta = $('#filter1').val();
+    agregarEstacion(esta);
+    //agregarEstacion("TESTEO_MILI");
     // var gasTipo = $('#filter3').val();
     // return gasTipo;
 	
-    });  
-    
-   
-    function pintarDatos(gas, feature){
-      switch (gas) {
-      case 'PM_10':
-              if (feature.properties.PM_10 > 0 && feature.properties.PM_10 < 54) {
-                return {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#CCE5FF",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};          		
-              } else 
-                if(feature.properties.PM_10 >= 54 && feature.properties.PM_10 < 154){
-                  return {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#00E400",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              } else 
-                if(feature.properties.PM_10 >= 154 && feature.properties.PM_10 < 254){
-                
-                return  {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#FFFF00",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              }else
-                if(feature.properties.PM_10 >= 254 && feature.properties.PM_10 < 354){
-                
-                return {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#FF7E00",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              }else
-                if(feature.properties.PM_10 >= 354 && feature.properties.PM_10 < 424){
-                
-                return {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#FF0000",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};	
-              }else 
-                {
-                
-                return {
-                  radius: feature.properties.PM_10,
-                  fillColor: "#8F3F97",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5} ;
-              }        						
-                  break;
-      case 'PM_2_5': 
-              if (feature.properties.PM_2_5 > 0 && feature.properties.PM_2_5 < 12) {
-                return {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#CCE5FF",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};          		
-              } else 
-                if(feature.properties.PM_2_5 >= 12 && feature.properties.PM_2_5 < 35){
-                  return {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#00E400",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              } else 
-                if(feature.properties.PM_2_5 >= 35 && feature.properties.PM_2_5 < 55){
-                
-                return  {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#FFFF00",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              }else
-                if(feature.properties.PM_2_5 >= 55 && feature.properties.PM_2_5 < 150 ){
-                
-                return {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#FF7E00",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};
-              }else
-                if(feature.properties.PM_2_5 >= 150 && feature.properties.PM_2_5 < 250){
-                
-                return {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#FF0000",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5};	
-              }else 
-                {
-                
-                return {
-                  radius: feature.properties.PM_2_5,
-                  fillColor: "#8F3F97",
-                  color: "#000",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 0.5} ;
-              }     						
-                break;
-      case 'CO':
-        if (feature.properties.CO > 0 && feature.properties.CO < 12) {
-          return {
-            radius: feature.properties.CO * 50,
-            fillColor: "#CCE5FF",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};          		
-        } else 
-          if(feature.properties.CO >= 12 && feature.properties.CO < 35){
-            return {
-            radius: feature.properties.CO * 50,
-            fillColor: "#00E400",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        } else 
-          if(feature.properties.CO >= 35 && feature.properties.CO < 55){
-          
-          return  {
-            radius: feature.properties.CO * 50,
-            fillColor: "#FFFF00",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        }else
-          if(feature.properties.CO >= 55 && feature.properties.CO < 150 ){
-          
-          return {
-            radius: feature.properties.CO * 50,
-            fillColor: "#FF7E00",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        }else
-          if(feature.properties.CO >= 150 && feature.properties.CO < 250){
-          
-          return {
-            radius: feature.properties.CO * 50,
-            fillColor: "#FF0000",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};	
-        }else 
-          {
-          
-          return {
-            radius: feature.properties.CO * 50,
-            fillColor: "#8F3F97",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5} ;
-        }         								
-      
-          break;
-      case 'NO2':
-
-            if (feature.properties.NO2 > 0 && feature.properties.NO2 < 12) {
-              return {
-                radius: feature.properties.NO2,
-                fillColor: "#CCE5FF",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};          		
-            } else 
-              if(feature.properties.NO2 >= 12 && feature.properties.NO2 < 35){
-                return {
-                radius: feature.properties.NO2,
-                fillColor: "#00E400",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            } else 
-              if(feature.properties.NO2 >= 35 && feature.properties.NO2 < 55){
-              
-              return  {
-                radius: feature.properties.NO2,
-                fillColor: "#FFFF00",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            }else
-              if(feature.properties.NO2 >= 55 && feature.properties.NO2 < 150 ){
-              
-              return {
-                radius: feature.properties.NO2,
-                fillColor: "#FF7E00",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            }else
-              if(feature.properties.NO2 >= 150 && feature.properties.NO2 < 250){
-              
-              return {
-                radius: feature.properties.NO2,
-                fillColor: "#FF0000",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};	
-            }else 
-              {
-              
-              return {
-                radius: feature.properties.NO2,
-                fillColor: "#8F3F97",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5} ;
-            } 
-            break;
-      case 'SO2':
-        if (feature.properties.SO2 > 0 && feature.properties.SO2 < 12) {
-          return {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#CCE5FF",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};          		
-        } else 
-          if(feature.properties.SO2 >= 12 && feature.properties.SO2 < 35){
-            return {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#00E400",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        } else 
-          if(feature.properties.SO2 >= 35 && feature.properties.SO2 < 55){
-          
-          return  {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#FFFF00",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        }else
-          if(feature.properties.SO2 >= 55 && feature.properties.SO2 < 150 ){
-          
-          return {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#FF7E00",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};
-        }else
-          if(feature.properties.SO2 >= 150 && feature.properties.SO2 < 250){
-          
-          return {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#FF0000",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5};	
-        }else 
-          {
-          
-          return {
-            radius: feature.properties.SO2 * 50,
-            fillColor: "#8F3F97",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.5} ;
-        }         								
-      
-          break;
-      
-      case 'NO':
-
-            if (feature.properties.NO > 0 && feature.properties.NO < 12) {
-              return {
-                radius: feature.properties.NO,
-                fillColor: "#CCE5FF",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};          		
-            } else 
-              if(feature.properties.NO >= 12 && feature.properties.NO < 35){
-                return {
-                radius: feature.properties.NO,
-                fillColor: "#00E400",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            } else 
-              if(feature.properties.NO >= 35 && feature.properties.NO < 55){
-              
-              return  {
-                radius: feature.properties.NO,
-                fillColor: "#FFFF00",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            }else
-              if(feature.properties.NO >= 55 && feature.properties.NO < 150 ){
-              
-              return {
-                radius: feature.properties.NO,
-                fillColor: "#FF7E00",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};
-            }else
-              if(feature.properties.NO >= 150 && feature.properties.NO < 250){
-              
-              return {
-                radius: feature.properties.NO,
-                fillColor: "#FF0000",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5};	
-            }else 
-              {
-              
-              return {
-                radius: feature.properties.NO,
-                fillColor: "#8F3F97",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.5} ;
-            } 
-            break;
-
-
-      default: console.log('no funciona');
-        break;
-    }} 
-
-
-    function mostrarInfo(gas, quake){
-        switch (gas) {
-          case 'PM_10':
-            const fechaVista = new Date (quake.feature.properties.end);
-
-            var list = document.getElementById("displayed-list");
-            list.innerHTML = "";
-            var li = document.createElement("li");
-            li.innerHTML = `
-            MEDICION PM 10: ${quake.feature.properties.PM_10}	</br>
-            FECHA: ${fechaVista.toString()}					
-              `
-            list.appendChild(li);
-            break;
-          case 'PM_2_5':
-              var list = document.getElementById("displayed-list");
-              list.innerHTML = "";
-              var li = document.createElement("li");
-              li.innerHTML = `
-              MEDICION PM 2.5: ${quake.feature.properties.PM_2_5}	</br>
-              FECHA: ${quake.feature.properties.end.getDate}					
-                `
-              list.appendChild(li);
-              break;
-
-          case 'NO':
-                var list = document.getElementById("displayed-list");
-                list.innerHTML = "";
-                var li = document.createElement("li");
-                li.innerHTML = `
-                MEDICION NO: ${quake.feature.properties.NO}	</br>
-                FECHA: ${quake.feature.properties.end.getDate}					
-                  `
-                list.appendChild(li);
-                break;
-          case 'SO2':
-                  var list = document.getElementById("displayed-list");
-                  list.innerHTML = "";
-                  var li = document.createElement("li");
-                  li.innerHTML = `
-                  MEDICION SO2 ${quake.feature.properties.SO2}	</br>
-                  FECHA: ${quake.feature.properties.end.getDate}					
-                    `
-                  list.appendChild(li);
-                  break;
-          case 'CO':
-                    var list = document.getElementById("displayed-list");
-                    list.innerHTML = "";
-                    var li = document.createElement("li");
-                    li.innerHTML = `
-                    MEDICION CO ${quake.feature.properties.CO}	</br>
-                    FECHA: ${quake.feature.properties.end.getDate}					
-                      `
-                    list.appendChild(li);
-                    break;
-        
-          default:
-            console.log('no funciona')
-            break;
-        }
-    }
-
-
-
+	});  
+	function coloresPM10(valorGas){
+		if (valorGas > 0 && valorGas < 54) {
+			const color = "#CCE5FF"
+			return(color);		
+		} else 
+			if(valorGas >= 54 && valorGas < 154){
+			const color = "#00E400"
+			return(color);
+		} else 
+			if(valorGas >= 154 && valorGas < 254){
+			const color = "#FFFF00"
+			return(color);
+		}else
+			if(valorGas >= 254 && valorGas < 354){
+			const color = "#FF7E00"
+			return(color);
+		}else
+			if(valorGas >= 354 && valorGas < 424){
+			const color = "#FF0000"
+			return(color);	
+		}else 
+			{
+			const color = "#8F3F97"
+			return(color);
+		}
+	}
 	
+	function diaClave(propie){
+		for(i=0; i< propie.length; i++){
+			var info = propie[i].properties;	
+			const fechaFormulario = document.querySelector('input[name="trip"]').value;	
+			const unicaFecha = new Date(fechaFormulario);
+			const transcurso1 = unicaFecha.getTime()
+			//capturar la fecha del WFS y convertirla a milisegundos
+			const fechaWFS = new Date(info.FECHA);			   	
+			const fechaWFStra = fechaWFS.getTime();	
+			if(fechaWFStra === transcurso1){
+				const latitud = info.LATITUD;	  
+				const longitud = info.LONGITUD;		   
+				const fecha = info.FECHA;
+				const pm10 = info.PM_10;
+				const pm25 = info.PM_2_5;
+				const NO2 = info.NO2;
+				const NO = info.NO;
+				const co = info.CO;
+				const so2 = info.SO2;
+
+				const gas = $('#filter2').val();							 
+				switch (gas) {
+							case 'PM_10':
+								var marker = L.circle([latitud, longitud], {radius: (pm10*10), stroke:true, color: coloresPM10(pm10) }).bindPopup(`
+								<h5>Información</h5>
+								<ol>
+								<li>Fecha: ${fechaFormulario}</li>
+								<li>Medicion de Gas Promedio PM10: ${pm10.toString()}</li>
+									</ol>` ).addTo(mymap);								
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+									limpiarMapa(marker);							
+							break;
+							case 'PM_2_5':
+								var marker = L.circle([latitud, longitud], {radius: (pm_2_5*10), stroke:true, color: coloresPM25(pm_2_5) }).bindPopup(`<ol>
+								<li>${fechaFormulario}</li>	
+								<li>${pm_2_5.toString()}</li>							
+									</ol>` ).addTo(mymap);
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+									limpiarMapa(marker);
+							break;
+							case 'N02':
+								var marker = L.circle([latitud, longitud], {radius: (no2*10), stroke:true, color: coloresNO(no2) }).bindPopup(`<ol>
+								<li>${fechaFormulario}</li>
+								<li>${no2.toString()}</li>
+									</ol>` ).addTo(mymap);
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });
+									limpiarMapa(marker);
+							break;
+							case 'NO':
+								var marker = L.circle([latitud, longitud], {radius: (No*10), stroke:true, color: coloresNO(No) }).bindPopup(`<ol>
+								<li>${fechaFormulario}</li>	
+								<li>${No.toString()}</li>
+									</ol>` ).addTo(mymap);
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+									limpiarMapa(marker);
+							break;
+							case 'CO':
+								var marker = L.circle([latitud, longitud], {radius: (Co*10), stroke:true, color: coloresCO(Co) }).bindPopup(`<ol>
+								<li>${fechaFormulario}</li>
+								<li>${Co.toString()}</li>
+									</ol>` ).addTo(mymap);
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+									limpiarMapa(marker);
+							break;
+							case 'SO2':
+								var marker = L.circle([latitud, longitud], {radius: (So2*10), stroke:true, color: coloresSO2(So2) }).bindPopup(`<ol>
+								<li>${fechaFormulario}</li>					
+								<li>${So2.toString()}</li>
+									</ol>` ).addTo(mymap);
+									mymap.fitBounds(marker.getBounds(), { padding: [20, 20] });	
+									limpiarMapa(marker);
+							break;
+						default: console.log('no funciona');
+								break;
+						}
+						break;	 
+						}
+					 else{
+						 console.log('no selecciono nada')
+						}
+			 }
+	
+	}
+    
+  
+   	
 function agregarEstacion(wfs){
-		var boundaries9 = new L.WFS({
+		var estacion = new L.WFS({
 			url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
-		 typeNS: wfs,
+		 typeNS: 'calidad_aire_postgres',
 		 typeName: wfs,
 		 crs: L.CRS.EPSG4326,
-		 geometryField: 'geom',
-		 style: {
-		   color: 'red',
-		   weight: 1,
-		   
-		   
-			 } 
+		 geometryField: 'geom'
+		
 			 
-	   }).once('load', function enviarformulario() {
-							 
-                 var geoJsons = boundaries9.toGeoJSON();
-                 console.log(geoJsons)
-                 console.log(new Date(geoJsons.features[0].properties.FECHA).getTime());
-                 console.log(geoJsons.features[0].properties.NO2);
-                 console.log(geoJsons.features[0].properties.NO );
-                 
-                  
-                 
-                 
-                 var timeline = L.timeline(geoJsons,{                     
-                    pointToLayer: function (feature, latlng) { 
-                        console.log(feature); 
-                        const gas = $('#filter3').val();
-                        return L.circleMarker(latlng,pintarDatos(gas,feature))
-                                }
-
-                }).addTo(mymap);  
-                
-                const fechaIni = document.querySelector('input[name="trip-start"]').value;
-				        const fechaFin = document.querySelector('input[name="trip-end"]').value;
-
-          
-           var timelineControl = L.timelineSliderControl({
-                    // start: inicio,
-                    // end: fin,   
-                    start: new Date(fechaIni).getTime(),
-                    end: new Date(fechaFin).getTime(),
-                    formatOutput: function (date) {
-                      return new Date(date).toString();
-                    },
-                    duration: 30000
-                  });
-           function updateList(timeline) {
-                  var displayed = timeline.getLayers();
-                  //var list = document.getElementById("displayed-list");
-                  //list.innerHTML = "";
-                  displayed.forEach(function (quake) {
-                    const gas = $('#filter3').val();
-                    console.log(gas);
-                    mostrarInfo(gas,quake);
+	 })	 
+      .once('load', function enviarformulario() {              
 
 
-                    // var li = document.createElement("li");
-                    // li.innerHTML = `
-                    // MEDICION ${quake.feature.properties.gas}	
-                    // FECHA: ${quake.feature.properties.end}					
-                    //   `
-                    // list.appendChild(li);
-                  });
-                }
-
-                
-                timelineControl.addTo(mymap);
-                timelineControl.addTimelines(timeline);
-                timeline.addTo(mymap);
-                timeline.on("change", function (e) {
-                  updateList(e.target);
-                });
-                updateList(timeline);    
-
+	  
+	var geoJsons = estacion.toGeoJSON();
+	var propie = geoJsons.features;	
+	diaClave(propie);	   
+   
+  
+     
 		 });//fin duncion enviar formulario
 
     }//fin funcion agregar estacion 2 
