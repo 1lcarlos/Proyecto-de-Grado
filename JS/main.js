@@ -166,19 +166,6 @@ function coloresSO2(valorGas){
 	}
 }
 
-function spinner(){
-	const divSpinner = document.createElement('div');
-	divSpinner.classList.add('sk-chase');
-	divSpinner.innerHTML = `
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>
-		<div class="sk-chase-dot"></div>	
-	`;
-	contenedorMapa.appendChild(divSpinner);
-}
 
 function limpiarMapa(marker){
 	$('#Limpiar').click(function remove() {
@@ -188,7 +175,6 @@ function limpiarMapa(marker){
 
 }); 
 }
-
 
 // ESCOGE EL DIA CLAVE COMPARA LA FECHA CON LA QUE ESCOGE EL USUARIO
 function diaClave(propie){
@@ -311,7 +297,6 @@ function diaClave(propie){
 }
 	
 
-
 	mymap.on('mousemove', function (e) {
 		var str = "Latitude: " + e.latlng.lat.toFixed(5) + "  Longitude: " + e.latlng.lng.toFixed(5) + "  Zoom Level: " + mymap.getZoom();
 		$("#map_coords").html(str); // Agrego una funcion que reacciona al movimiento del mouse y muestra las coordenadas actuales en el footer.
@@ -336,20 +321,169 @@ function diaClave(propie){
 			alert('Hace falta escoger un gas o una Estacion para la visualizacion');
 			//	return false;
 		}else{
+		
 		var gas = $('#filter2').val();
 		var capa = $('#filter1').val();
-		agregarUnicaEstacion(capa);	
+		var fecha = $('#fecha').val()
+		const fechaFontibon = new Date(fecha).getTime();
+		switch (capa) {
+			case 'EST_GUAYMARAL':
+				guaymaral(capa, gas);
+				break;
+			case 'EST_FERIAS':
+				ferias(capa, gas);
+				break;
+			case 'EST_MINAMBIENTE':
+				minAmbiente(capa, gas);
+				break;
+			case 'EST_SAN_CRISTOBAL':
+				sanCristobal(capa, gas);
+				break;
+			case 'EST_SUBA':
+				suba(capa, gas);
+				break;
+			case 'EST_TUNAL':
+				tunal(capa, gas);
+				break;
+			case 'EST_USAQUEN':
+				usaquen(capa, gas);
+				break;
+			case 'EST_FONTIBON':
+				fontibon(capa, fechaFontibon)
+				break
+			default:
+				break;
 		}
-
-					
+		
+			
+		}		
 	
 		}); 
+
+	
+
+	function guaymaral(capa, gas){
+		if (capa === 'EST_GUAYMARAL' && gas === 'SO2') {
+			alert('Esta estación no tiene mediciones sobre los gases SO2 y CO puede consultar los demas');
+			
+		}else if(capa === 'EST_GUAYMARAL' && gas === 'CO') {
+			alert('Esta estación no tiene mediciones sobre los gases SO2 y CO puede consultar los demas');
+		} else{
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		}
+	};
+	function ferias(capa, gas){
+		if (capa === 'EST_FERIAS' && gas === 'SO2') {
+			alert('Esta estación no tiene mediciones sobre los gases SO2 y N02 puede consultar los demas');
+			
+		}else if(capa === 'EST_FERIAS' && gas === 'N02') {
+			alert('Esta estación no tiene mediciones sobre los gases SO2 y N02 puede consultar los demas');
+		} else{
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		}
+	};
+	function minAmbiente(capa, gas){
+		if (capa === 'EST_MINAMBIENTE' && gas === 'PM_10') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+			
+			
+		}else if(capa === 'EST_MINAMBIENTE' && gas === 'PM_2_5') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		} else{
+			alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+		}
+	};
+	function sanCristobal(capa, gas){
+		if (capa === 'EST_SAN_CRISTOBAL' && gas === 'PM_10') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+			
+			
+		}else if(capa === 'EST_SAN_CRISTOBAL' && gas === 'PM_2_5') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		} else{
+			alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+		}
+	};
+
+	function suba(capa, gas){
+		if (capa === 'EST_SUBA' && gas === 'PM_10') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);			
+			
+		}else if(capa === 'EST_SUBA' && gas === 'PM_2_5') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		} else if(capa === 'EST_SUBA' && gas === 'SO2') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		} 
+		else{
+			alert('Esta estación solo tiene datos de las mediciones de los gases PM10,  PM2.5 y SO2, puedes consultar sobre ellos. ');
+		}
+	};
+	function tunal(capa, gas){
+		if (capa === 'EST_TUNAL' && gas === 'SO2') {
+			alert('Esta estación no tiene datos de las mediciones del gas SO2, puede consultar todos los demas. ');			
+		}
+		else{
+			cargandoDatos();
+			agregarUnicaEstacion(capa);			
+			
+		}
+	};
+	function usaquen(capa, gas){
+		if (capa === 'EST_USAQUEN' && gas === 'PM_10') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+			
+			
+		}else if(capa === 'EST_USAQUEN' && gas === 'PM_2_5') {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+		} else{
+			alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+		}
+	};
+	function fontibon(capa, fecha){
+		if (fecha < 1546318800000) {
+			alert('Esta estación solo tiene datos de las mediciones de los gases apartir del 1 de enero del 2019 ');			
+		} else {
+			cargandoDatos();
+			agregarUnicaEstacion(capa);
+			
+		}
+	}
+
+	
+
+		const modulo1 = document.querySelector('#cargando');
+		function cargandoDatos(){
+		const mensajeCargando = document.createElement('p');
+		mensajeCargando.textContent = "Cargando Datos";
+		mensajeCargando.classList.add('text-center', 'cargando', 'border', 'border-green-500');
+		const cargando = document.querySelectorAll('.cargando');
+		modulo1.appendChild(mensajeCargando);
+			setTimeout(function() {
+				// Declaramos la capa mediante una clase para ocultarlo
+				$(".cargando").fadeOut(2000);
+				//mensajeCargando.remove();
+			},4000);
+		
+
+	}
 
 		
 		
 
 	function agregarUnicaEstacion(wfs){
 		var estacion = new L.WFS({
+			//url: 'http://192.168.0.11:8080/geoserver/calidad_aire_postgres/ows',
 			url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
 			typeNS: wfs,
 			typeName: wfs,
@@ -372,16 +506,16 @@ function diaClave(propie){
 
 //Time slider
 
-$('#estac').click(function esco_Esta(){
+/*$('#estac').click(function esco_Esta(){
 
 
-	//var esta = $('#filter').val();
+	var esta = $('#filter').val();
   //agregarEstacion(esta);
-  agregarEstacionTimeSlider("TESTEO_MILI");
+  agregarEstacionTimeSlider(esta);
   // var gasTipo = $('#filter3').val();
   // return gasTipo;
   
-  });  
+  });  */
 
   function pintarDatos(gas, feature){
 	switch (gas) {
@@ -761,7 +895,8 @@ $('#estac').click(function esco_Esta(){
 function mostrarInfo(gas, quake){
 	switch (gas) {
 	  case 'PM_10':
-		const fechaVista = new Date (quake.feature.properties.end);
+		//const fechaVista = new Date (quake.feature.properties.end);
+		const fechaVista = new Date (quake.feature.properties.start);
 
 		var list = document.getElementById("displayed-list");
 		list.innerHTML = "";
@@ -822,6 +957,7 @@ function mostrarInfo(gas, quake){
 
 function  agregarEstacionTimeSlider(wfs){
 	var estacion = new L.WFS({
+		//url: 'http://192.168.0.11:8080/geoserver/calidad_aire_postgres/ows',
 		url: 'http://localhost:8080/geoserver/calidad_aire_postgres/ows',
 		typeNS: wfs,
 		typeName: wfs,
@@ -842,15 +978,18 @@ function  agregarEstacionTimeSlider(wfs){
 			const fechaIni = document.querySelector('input[name="trip-start"]').value;
 			const fechaFin = document.querySelector('input[name="trip-end"]').value;
 
-	  
+			const cincoHoras = 18000000;
+
 	   var timelineControl = L.timelineSliderControl({
-				start: new Date(fechaIni).getTime(),
-				end: new Date(fechaFin).getTime(),
+				start: new Date(fechaIni).getTime() + cincoHoras,
+				end: new Date(fechaFin).getTime() + cincoHoras,
 				formatOutput: function (date) {
 				  return new Date(date).toString();
 				},
 				duration: 30000
 			  });
+
+		
 	   function updateList(timeline) {
 			  var displayed = timeline.getLayers();
 			   displayed.forEach(function (quake) {
@@ -873,8 +1012,211 @@ function  agregarEstacionTimeSlider(wfs){
 
 }//fin funcion agregar estacion 2 
 
+$('#Limpiar2').click(function limpiarBusqueda(){
 
+	const quitarSlider  = document.querySelector('div.leaflet-timeline-control');
+	quitarSlider.remove();
 
-
+	const quitarCirculo  = document.querySelector('path.leaflet-interactive');
+	quitarCirculo.remove();
 	
+	const quitarTabla  = document.querySelector('li');
+	quitarTabla.remove();
+
+		  
+	  });  
+
+const btnConsultar = document.querySelector('#estac');
+
+eventListeners();
+function eventListeners(){
+    //cuando la app arranca
+    document.addEventListener('DOMContentLoaded', iniciarApp);
+
+    //validando el formulario
+    btnConsultar.addEventListener('click', validarTimeSlider);
+}
+
+function iniciarApp(){
+	console.log("listo para iniciar")
+}
+
+const modulo2 = document.querySelector('#cargando2');
+		function cargandoDatos2(){
+		const mensajeCargando = document.createElement('p');
+		mensajeCargando.textContent = "Cargando Datos";
+		mensajeCargando.classList.add('text-center', 'cargando', 'border', 'border-green-500');
+		const cargando = document.querySelectorAll('.cargando');
+		modulo2.appendChild(mensajeCargando);
+			setTimeout(function() {
+				// Declaramos la capa mediante una clase para ocultarlo
+				$(".cargando").fadeOut(2000);
+				//mensajeCargando.remove();
+			},4000);
+
+	}
+
+
+function validarTimeSlider(e){
+
+if ($('#filter').val().length == 0 || $('#filter3').val().length == 0 || $('#start').val().length == 0|| $('#end').val().length == 0) {
+	alert('Se deben llenar todos los campos del formulario');
+	
+}else{
+	soloUno();
+}
+
+}
+function soloUno(){
+	const timelineSliderControls = document.querySelectorAll('.leaflet-timeline-control');
+	if (timelineSliderControls.length == 0) {
+		
+		var gas = $('#filter3').val();
+		var capa = $('#filter').val();
+		var fechaIni = $('#start').val()
+		const fechaFontibon = new Date(fechaIni).getTime();
+		switch (capa) {
+			case 'EST_GUAYMARAL':
+				guaymaralTS(capa, gas);
+				break;
+			case 'EST_FERIAS':
+				feriasTS(capa, gas);
+				break;
+			case 'EST_MINAMBIENTE':
+				minAmbienteTS(capa, gas);
+				break;
+			case 'EST_SAN_CRISTOBAL':
+				sanCristobalTS(capa, gas);
+				break;
+			case 'EST_SUBA':
+				subaTS(capa, gas);
+				break;
+			case 'EST_TUNAL':
+				tunalTS(capa, gas);
+				break;
+			case 'EST_USAQUEN':
+				usaquenTS(capa, gas);
+				break;
+			case 'EST_FONTIBON':
+				fontibonTS(capa, fechaFontibon)
+				break
+			default:
+				break;
+		}	
+	}
+
+}
+
+function guaymaralTS(capa, gas){
+	if (capa === 'EST_GUAYMARAL' && gas === 'SO2') {
+		alert('Esta estación no tiene mediciones sobre los gases SO2 y CO puede consultar los demas');
+		
+	}else if(capa === 'EST_GUAYMARAL' && gas === 'CO') {
+		alert('Esta estación no tiene mediciones sobre los gases SO2 y CO puede consultar los demas');
+	} else{
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+	}
+};
+function feriasTS(capa, gas){
+	if (capa === 'EST_FERIAS' && gas === 'SO2') {
+		alert('Esta estación no tiene mediciones sobre los gases SO2 y N02 puede consultar los demas');
+		
+	}else if(capa === 'EST_FERIAS' && gas === 'N02') {
+		alert('Esta estación no tiene mediciones sobre los gases SO2 y N02 puede consultar los demas');
+	} else{
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+	}
+};
+function minAmbienteTS(capa, gas){
+	if (capa === 'EST_MINAMBIENTE' && gas === 'PM_10') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+		
+		
+	}else if(capa === 'EST_MINAMBIENTE' && gas === 'PM_2_5') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+	} else{
+		alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+	}
+};
+function sanCristobalTS(capa, gas){
+	if (capa === 'EST_SAN_CRISTOBAL' && gas === 'PM_10') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+		
+		
+	}else if(capa === 'EST_SAN_CRISTOBAL' && gas === 'PM_2_5') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 
+	} else{
+		alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+	}
+};
+
+function subaTS(capa, gas){
+	if (capa === 'EST_SUBA' && gas === 'PM_10') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta); 		
+		
+	}else if(capa === 'EST_SUBA' && gas === 'PM_2_5') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);
+	} else if(capa === 'EST_SUBA' && gas === 'SO2') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);
+	} 
+	else{
+		alert('Esta estación solo tiene datos de las mediciones de los gases PM10,  PM2.5 y SO2, puedes consultar sobre ellos. ');
+	}
+};
+function tunalTS(capa, gas){
+	if (capa === 'EST_TUNAL' && gas === 'SO2') {
+		alert('Esta estación no tiene datos de las mediciones del gas SO2, puede consultar todos los demas. ');			
+	}
+	else{
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);			
+		
+	}
+};
+function usaquenTS(capa, gas){
+	if (capa === 'EST_USAQUEN' && gas === 'PM_10') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);
+		
+		
+	}else if(capa === 'EST_USAQUEN' && gas === 'PM_2_5') {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);
+	} else{
+		alert('Esta estación solo tiene datos de las mediciones de los gases PM10 y PM2.5, puedes consultar sobre ellos. ');
+	}
+};
+function fontibonTS(capa, fecha){
+	if (fecha < 1546318800000) {
+		alert('Esta estación solo tiene datos de las mediciones de los gases apartir del 1 de enero del 2019 ');			
+	} else {
+		cargandoDatos2();
+		var esta = $('#filter').val();  
+    	agregarEstacionTimeSlider(esta);
+		
+	}
+}
+
+
 });
